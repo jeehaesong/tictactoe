@@ -13,6 +13,13 @@ triples <- list(
   c(3,5,7)
 )
 
+alternativePlayer <- function (state,userNum,currentSymbol){
+  display(state)
+  input <- readline(prompt='Player "X": Select the coordinate you want to play ')
+  state <- update(state,currentSymbol,input)
+  return(state)
+}
+
 play <- function(){
   # determine game conditons: 1 or 2 players. If computer plays, is it player 1 or 2.
   userNum <- readline(prompt='Press 1 for one player, 2 for two players: ')
@@ -24,10 +31,12 @@ play <- function(){
   # while( no winner ){
   while( is.na(check_winner(board))  ){
     # x's turn
-    display(board) # display board 
-    # x chooses where to play. prompt user or computer_turn()
-    xInput <- readline(prompt='Player "X": Select the coordinate you want to play ')
-    board <- update(board,'x',xInput) # update board
+    # display(board) # display board 
+    # # x chooses where to play. prompt user or computer_turn()
+    # xInput <- readline(prompt='Player "X": Select the coordinate you want to play ')
+    # board <- update(board,'x',xInput) # update board
+    # 
+    board <- alternativePlayer(board,userNum,'x')
     
     if( !is.na(check_winner(board) ) ){
       break; # if x wins - quit loop
@@ -122,7 +131,7 @@ computer_turn <- function(state){
   if( is.na( available[randomIndex]  )){
     playIndex <- randomIndex
   }else{
-    while(  available[randomIndex] == 0 ){
+    while(  available[randomIndex] == 'x' | available[randomIndex] == 'o'){
       randomIndex <- sample(seq(1:9),1)
     }
   }
@@ -197,6 +206,8 @@ findLastSpot <- function(state, symbol){
   }
   return (playIndex)
 }
+
+
 
 
 cat("Enter 'play()' to play tic tec toe")
