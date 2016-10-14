@@ -74,7 +74,7 @@ update <- function (state, who, pos){
   } else if(  state[pos] != 'x' & state[pos] != 'o'){
     state[pos] <- who
   } else{
-    print("You cannot play that location")
+    cat("You cannot play that location",pos)
     xInput <- readline(prompt='Enter the different number: ')
     state <- update(state,who,xInput)
   }
@@ -177,8 +177,14 @@ findLastSpot <- function(state, symbol){
         emptyIndex <- triples[[j]][k]
       }
       if(k ==3 & count ==2){
-        playIndex <-emptyIndex
-        break;
+        cat('180',emptyIndex, j, k, state[emptyIndex])
+        if(state[emptyIndex] == 'o'| state[emptyIndex] =='x'){
+          
+        }else{
+          playIndex <-emptyIndex
+          break;
+        }
+        
       }
     }
     if(!is.na(playIndex)){
