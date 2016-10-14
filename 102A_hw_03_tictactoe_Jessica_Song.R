@@ -237,7 +237,7 @@ alternativePlayer <- function (state,userNum,currentSymbol,isCom){
   display(state) # display board 
   if(isCom){
     input <-computer_turn(state)
-    cat('Computer played on',input)
+    cat('Computer played on',input,'\n')
   }else{
     messagge <- cat('Player "',currentSymbol,'": Select the coordinate you want to play ')
     input <- readline(prompt=messagge)
