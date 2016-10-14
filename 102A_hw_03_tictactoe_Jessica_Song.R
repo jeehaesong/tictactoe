@@ -13,13 +13,14 @@ triples <- list(
   c(3,5,7)
 )
 
-alternativePlayer <- function (state,userNum,currentSymbol){
+alternativePlayer <- function (state,userNum,currentSymbol,isCom){
   display(state) # display board 
-  if(userNum == 1 & currentSymbol =='o'){
+  if(isCom){
     input <-computer_turn(state)
     cat('Computer played on',input)
   }else{
-    input <- readline(prompt='Player "X": Select the coordinate you want to play ')
+    messagge <- cat('Player "',currentSymbol,'": Select the coordinate you want to play ')
+    input <- readline(prompt=messagge)
   }
   state <- update(state,currentSymbol,input)
   return(state)
@@ -27,27 +28,59 @@ alternativePlayer <- function (state,userNum,currentSymbol){
 
 play <- function(){
   # determine game conditons: 1 or 2 players. If computer plays, is it player 1 or 2.
+  whoFirst <- 0
   userNum <- readline(prompt='Press 1 for one player, 2 for two players: ')
-  # if(userNum ==1){
-  #   whoFirst <- readline(promtp='Decide who goes first. Press 3 for computer, press 4 for user (you)')
-  # }
+  cat('line 33')
+  if(userNum == "1"){
+    whoFirst <- readline(prompt='Decide who goes first. Press 3 for user (you), press 4 for computer ')
+  }
   # initialize game board
   board <- c("1","2","3","4","5","6","7","8","9")
   # while( no winner ){
-  while( is.na(check_winner(board))  ){
-    # x's turn
-    board <- alternativePlayer(board,userNum,'x')
-    
-    if( !is.na(check_winner(board) ) ){
-      break; # if x wins - quit loop
+  if(whoFirst == 4){
+    while( is.na(check_winner(board))  ){
+      # x's turn
+      board <- alternativePlayer(board,userNum,'x',TRUE)
+      if( !is.na(check_winner(board) ) ){
+        break; # if x wins - quit loop
+      }
+      
+      # o's turn
+      board <- alternativePlayer(board,userNum,'o',FALSE)
+      # if o wins - quit loop
+      if( !is.na(check_winner(board) ) ){
+        break; # if x wins - quit loop
+      }
     }
-    
-    # o's turn
-    board <- alternativePlayer(board,userNum,'o')
-    
-    # if o wins - quit loop
-    if( !is.na(check_winner(board) ) ){
-      break; # if x wins - quit loop
+  }else if(whoFirst == 3){
+    while( is.na(check_winner(board))  ){
+      # x's turn
+      board <- alternativePlayer(board,userNum,'x',FALSE)
+      if( !is.na(check_winner(board) ) ){
+        break; # if x wins - quit loop
+      }
+      
+      # o's turn
+      board <- alternativePlayer(board,userNum,'o',TRUE)
+      # if o wins - quit loop
+      if( !is.na(check_winner(board) ) ){
+        break; # if x wins - quit loop
+      }
+    }
+  }else{
+    while( is.na(check_winner(board))  ){
+      # x's turn
+      board <- alternativePlayer(board,userNum,'x',FALSE)
+      if( !is.na(check_winner(board) ) ){
+        break; # if x wins - quit loop
+      }
+      
+      # o's turn
+      board <- alternativePlayer(board,userNum,'o',FALSE)
+      # if o wins - quit loop
+      if( !is.na(check_winner(board) ) ){
+        break; # if x wins - quit loop
+      }
     }
   }
   # display final board state and who the winner is
@@ -148,7 +181,6 @@ check_winner <- function(state) {
     if(count==3){
       if(temp[1]== temp[2] & temp[1]==temp[3]){
         winner <- temp[1]
-        # cat(winner,'won!')
         break
       }
     }
@@ -190,7 +222,6 @@ findLastSpot <- function(state, symbol){
           playIndex <-emptyIndex
           break;
         }
-        
       }
     }
     if(!is.na(playIndex)){
@@ -199,8 +230,5 @@ findLastSpot <- function(state, symbol){
   }
   return (playIndex)
 }
-
-
-
 
 cat("Enter 'play()' to play tic tec toe")
