@@ -26,7 +26,7 @@ play <- function(){
     # x's turn
     display(board) # display board 
     # x chooses where to play. prompt user or computer_turn()
-    xInput <- readline(prompt='Enter the number for player X: ')
+    xInput <- readline(prompt='Player "X": Select the coordinate you want to play ')
     board <- update(board,'x',xInput) # update board
     # print(board)
     if( !is.na(check_winner(board) ) ){
@@ -39,7 +39,7 @@ play <- function(){
     if(userNum == 1){
       oInput <-computer_turn(board)
     }else{
-      oInput <- readline(prompt='Enter the number for player O: ')
+      oInput <- readline(prompt='Player "O": Select the coordinate you want to play ')
     }
     board <- update(board,'o',oInput) # update board
     check_winner(board) # if o wins - quit loop
@@ -49,7 +49,11 @@ play <- function(){
   }
   # display final board state and who the winner is
   display(board)
-  cat('Congrats! ', check_winner(board) ,' win!')
+  if(check_winner(board) != 'tie'){
+    cat('Congrats! ', check_winner(board) ,' wins!')
+  }else{
+    cat('It was a ', check_winner(board) ,'!')
+  }
 }
 
 
@@ -74,7 +78,7 @@ update <- function (state, who, pos){
   } else if(  state[pos] != 'x' & state[pos] != 'o'){
     state[pos] <- who
   } else{
-    cat("You cannot play that location",pos)
+    cat("You cannot play that location:",pos)
     xInput <- readline(prompt='Enter the different number: ')
     state <- update(state,who,xInput)
   }
@@ -150,7 +154,7 @@ check_winner <- function(state) {
   xCount <- currentCount(state,'x')
   oCount <- currentCount(state,'o')
   if(xCount+oCount == 9){
-    cat('it was a tie!')
+    return ('tie')
   }
   winner
 }
@@ -177,7 +181,6 @@ findLastSpot <- function(state, symbol){
         emptyIndex <- triples[[j]][k]
       }
       if(k ==3 & count ==2){
-        cat('180',emptyIndex, j, k, state[emptyIndex])
         if(state[emptyIndex] == 'o'| state[emptyIndex] =='x'){
           
         }else{
