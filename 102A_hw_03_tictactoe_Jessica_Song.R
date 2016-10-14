@@ -97,11 +97,23 @@ display <- function (defalutVector= c(1:9)){
   output <- '\n'
   for(i in 1:9){
     if( i%%3 == 1 || i%%3 == 2){
-      output <- cat(output,defalutVector[i],'|')
+      if(!is.na(defalutVector[i])& (defalutVector[i]=='x' | defalutVector[i] == 'o')){
+        output <- cat(output,defalutVector[i],'|')
+      }else{
+        output <- cat(output,i,'|')
+      }
     } else if (i == 9){
-      output <- cat(output,defalutVector[i])
+      if(!is.na(defalutVector[i])& (defalutVector[i]=='x' | defalutVector[i] == 'o')){
+        output <- cat(output,defalutVector[i])
+      }else{
+        output <- cat(output,i)
+      }
     }else {
-      output <- cat(output,defalutVector[i],'\n---+---+---\n' )
+      if(!is.na(defalutVector[i])& (defalutVector[i]=='x' | defalutVector[i] == 'o')){
+        output <- cat(output,defalutVector[i],'\n---+---+---\n' )
+      }else{
+        output <- cat(output,i,'\n---+---+---\n' )
+      }
     }
   }
   cat(output,'\n')
