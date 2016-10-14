@@ -14,8 +14,13 @@ triples <- list(
 )
 
 alternativePlayer <- function (state,userNum,currentSymbol){
-  display(state)
-  input <- readline(prompt='Player "X": Select the coordinate you want to play ')
+  display(state) # display board 
+  if(userNum == 1 & currentSymbol =='o'){
+    input <-computer_turn(state)
+    cat('Computer played on',input)
+  }else{
+    input <- readline(prompt='Player "X": Select the coordinate you want to play ')
+  }
   state <- update(state,currentSymbol,input)
   return(state)
 }
@@ -31,11 +36,6 @@ play <- function(){
   # while( no winner ){
   while( is.na(check_winner(board))  ){
     # x's turn
-    # display(board) # display board 
-    # # x chooses where to play. prompt user or computer_turn()
-    # xInput <- readline(prompt='Player "X": Select the coordinate you want to play ')
-    # board <- update(board,'x',xInput) # update board
-    # 
     board <- alternativePlayer(board,userNum,'x')
     
     if( !is.na(check_winner(board) ) ){
@@ -43,16 +43,9 @@ play <- function(){
     }
     
     # o's turn
-    display(board) # display board 
-    # o chooses where to play. prompt user or computer_turn()
-    if(userNum == 1){
-      oInput <-computer_turn(board)
-      cat('Computer played on',oInput)
-    }else{
-      oInput <- readline(prompt='Player "O": Select the coordinate you want to play ')
-    }
-    board <- update(board,'o',oInput) # update board
-    check_winner(board) # if o wins - quit loop
+    board <- alternativePlayer(board,userNum,'o')
+    
+    # if o wins - quit loop
     if( !is.na(check_winner(board) ) ){
       break; # if x wins - quit loop
     }
