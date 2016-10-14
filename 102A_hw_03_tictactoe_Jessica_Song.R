@@ -28,7 +28,7 @@ play <- function(){
     # x chooses where to play. prompt user or computer_turn()
     xInput <- readline(prompt='Player "X": Select the coordinate you want to play ')
     board <- update(board,'x',xInput) # update board
-    # print(board)
+    
     if( !is.na(check_winner(board) ) ){
       break; # if x wins - quit loop
     }
@@ -38,6 +38,7 @@ play <- function(){
     # o chooses where to play. prompt user or computer_turn()
     if(userNum == 1){
       oInput <-computer_turn(board)
+      cat('Computer played on',oInput)
     }else{
       oInput <- readline(prompt='Player "O": Select the coordinate you want to play ')
     }
