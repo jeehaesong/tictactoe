@@ -13,19 +13,6 @@ triples <- list(
   c(3,5,7)
 )
 
-alternativePlayer <- function (state,userNum,currentSymbol,isCom){
-  display(state) # display board 
-  if(isCom){
-    input <-computer_turn(state)
-    cat('Computer played on',input)
-  }else{
-    messagge <- cat('Player "',currentSymbol,'": Select the coordinate you want to play ')
-    input <- readline(prompt=messagge)
-  }
-  state <- update(state,currentSymbol,input)
-  return(state)
-}
-
 play <- function(){
   # determine game conditons: 1 or 2 players. If computer plays, is it player 1 or 2.
   whoFirst <- 0
@@ -92,7 +79,6 @@ play <- function(){
   }
 }
 
-
 display <- function (defalutVector= c(1:9)){
   output <- '\n'
   for(i in 1:9){
@@ -126,7 +112,7 @@ update <- function (state, who, pos){
   } else if(  state[pos] != 'x' & state[pos] != 'o'){
     state[pos] <- who
   } else{
-    cat("You cannot play that location:",pos)
+    cat("You cannot play that location",pos,'\n')
     xInput <- readline(prompt='Enter the different number: ')
     state <- update(state,who,xInput)
   }
@@ -203,6 +189,9 @@ check_winner <- function(state) {
   if(xCount+oCount == 9){
     return ('tie')
   }
+  if(is.na(winner)){
+    cat('no winner yet!')
+  }
   winner
 }
 
@@ -224,11 +213,12 @@ findLastSpot <- function(state, symbol){
     for(k in 1:3){
       if(state[triples[[j]][k]] == symbol & !is.na(state[triples[[j]][k]]) ){
         count = count +1
-      }else if (!is.na(state[triples[[j]][k]]) & is.numeric(as.numeric(state[triples[[j]][k]]) )| is.na(state[triples[[j]][k]])){
+      }
+      else if (!is.na(state[triples[[j]][k]]) & is.numeric(as.numeric(state[triples[[j]][k]]) )| is.na(state[triples[[j]][k]])){
         emptyIndex <- triples[[j]][k]
       }
       if(k ==3 & count ==2){
-        if(state[emptyIndex] == 'o'| state[emptyIndex] =='x'){
+        if(!is.na(state[emptyIndex]) & (state[emptyIndex] == 'o'| state[emptyIndex] =='x')){
           
         }else{
           playIndex <-emptyIndex
@@ -241,6 +231,19 @@ findLastSpot <- function(state, symbol){
     }
   }
   return (playIndex)
+}
+
+alternativePlayer <- function (state,userNum,currentSymbol,isCom){
+  display(state) # display board 
+  if(isCom){
+    input <-computer_turn(state)
+    cat('Computer played on',input)
+  }else{
+    messagge <- cat('Player "',currentSymbol,'": Select the coordinate you want to play ')
+    input <- readline(prompt=messagge)
+  }
+  state <- update(state,currentSymbol,input)
+  return(state)
 }
 
 cat("Enter 'play()' to play tic tec toe")
